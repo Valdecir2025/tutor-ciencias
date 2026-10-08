@@ -24,6 +24,7 @@ system_instruction = (
     "Use emojis moderadamente para tornar a leitura amigável e use formatação em tópicos para respostas longas."
 )
 
+# Ajustado o nome do modelo para garantir compatibilidade universal na API
 model = ai.GenerativeModel(
     model_name="gemini-1.5-flash",
     system_instruction=system_instruction
@@ -49,7 +50,7 @@ if prompt := st.chat_input("Digite sua dúvida de Ciências aqui..."):
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         
-        # Envia apenas o texto atual (o modelo já sabe agir como professor pelas instruções do sistema)
+        # Chamada direta e limpa para gerar o texto
         response = model.generate_content(prompt)
         
         message_placeholder.markdown(response.text)
