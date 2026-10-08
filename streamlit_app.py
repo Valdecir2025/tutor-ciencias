@@ -24,9 +24,9 @@ system_instruction = (
     "Use emojis moderadamente para tornar a leitura amigável e use formatação em tópicos para respostas longas."
 )
 
-# Ajustado o nome do modelo para garantir compatibilidade universal na API
+# Modificado para a rota estável direta compatível com chaves novas
 model = ai.GenerativeModel(
-    model_name="gemini-1.5-flash",
+    model_name="gemini-flash-latest",
     system_instruction=system_instruction
 )
 
