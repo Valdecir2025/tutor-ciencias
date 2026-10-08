@@ -33,22 +33,24 @@ model = ai.GenerativeModel(
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+# Mostra as mensagens anteriores na tela
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
 # 5. Entrada de texto do aluno e resposta do robô
 if prompt := st.chat_input("Digite sua dúvida de Ciências aqui..."):
+    # Mostra a pergunta do aluno
     with st.chat_message("user"):
         st.markdown(prompt)
     st.session_state.messages.append({"role": "user", "content": prompt})
 
+    # Gera a resposta do professor usando a nova estrutura direta
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         
-        # Envia a mensagem contextualizada para a IA
-        chat = model.start_chat(history=[])
-        response = chat.send_message(prompt)
+        # Envia apenas o texto atual (o modelo já sabe agir como professor pelas instruções do sistema)
+        response = model.generate_content(prompt)
         
         message_placeholder.markdown(response.text)
     
