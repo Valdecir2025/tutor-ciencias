@@ -20,7 +20,8 @@ st.markdown("""
         border-radius: 8px;
     }
     </style>
-""", unsafe-allowed_html=True)
+""", unsafe_allow_html=True)
+
 
 # 2. Conexão segura com a chave do Gemini
 if "GEMINI_API_KEY" in st.secrets:
