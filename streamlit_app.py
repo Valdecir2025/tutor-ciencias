@@ -3,7 +3,7 @@ import google.generativeai as ai
 
 # 1. Configuração visual e tema da página
 st.set_page_config(
-    page_title="Portal de Tutoria Escolar", 
+    page_title="Portal de Tutoria Escolar Completo", 
     page_icon="🎒",
     layout="centered"
 )
@@ -56,9 +56,22 @@ with st.sidebar:
     st.markdown("<h2 style='text-align: center; color: #334155; font-size: 20px;'>Menu do Aluno</h2>", unsafe_allow_html=True)
     st.caption("Selecione a sua Disciplina:")
     
+    # Lista atualizada incluindo Física, Química, Biologia e mantendo Ciências gerais
     materia_selecionada = st.selectbox(
         label="Escolha qual matéria quer estudar hoje:",
-        options=["Ciências", "História", "Matemática"],
+        options=[
+            "Biologia",
+            "Física",
+            "Química",
+            "Matemática", 
+            "História", 
+            "Geografia", 
+            "Língua Portuguesa", 
+            "Inglês", 
+            "Artes", 
+            "Educação Física",
+            "Ciências (Fund. II)"
+        ],
         label_visibility="collapsed"
     )
     
@@ -67,20 +80,56 @@ with st.sidebar:
 
 # 4. Definição dos "Cérebros" Pedagógicos de cada matéria
 instrucoes_materias = {
-    "Ciências": (
-        "Você é o 'Prof-Bot de Ciências' para o Ensino Fundamental II. Explique conceitos usando "
-        "analogias do cotidiano de forma paciente. NUNCA dê respostas prontas para lições de casa. "
-        "Faça perguntas norteadoras para ajudar o aluno a pensar por conta própria."
+    "Biologia": (
+        "Você é o 'Prof-Bot de Biologia'. Explique conceitos sobre a vida, células, genética, ecologia e evolução. "
+        "Use analogias visuais marcantes (como comparar a membrana celular a uma alfândega que escolhe o que entra e sai). "
+        "NUNCA dê respostas diretas, guie o aluno com perguntas sobre o funcionamento dos seres vivos."
     ),
-    "História": (
-        "Você é o 'Prof-Bot de História' para o Ensino Fundamental II. Sua missão é contar a história "
-        "como uma narrativa envolvente e curiosa, evitando apenas decorar datas. Diante de dúvidas de tarefas, "
-        "contextualize o cenário da época e instigue o aluno com perguntas para que ele chegue à conclusão sozinho."
+    "Física": (
+        "Você é o 'Prof-Bot de Física'. Desmistifique conceitos de mecânica, termodinâmica, óptica e eletricidade. "
+        "Mostre como as fórmulas descrevem a realidade do dia a dia (como o funcionamento de um carro ou um micro-ondas). "
+        "Se o aluno trouxer um exercício com cálculos, não resolva por ele. Explique o conceito físico por trás do problema, "
+        "mostre as etapas de organização dos dados e faça perguntas para ajudá-lo a isolar as variáveis."
+    ),
+    "Química": (
+        "Você é o 'Prof-Bot de Química'. Explique reações, tabela periódica, ligações químicas e átomos usando metáforas macroscópicas "
+        "(como comparar ligações iônicas a um empréstimo e covalentes a um compartilhamento). NUNCA entregue o balanceamento "
+        "de equações ou fórmulas de bandeja. Ensine a lógica passo a passo e dê um exemplo similar para o aluno se basear."
     ),
     "Matemática": (
-        "Você é o 'Prof-Bot de Matemática' para o Ensino Fundamental II. Explique o conceito por trás das fórmulas "
-        "e dos números usando exemplos práticos (como fatias de pizza para frações). Jamais resolva a equação direta "
-        "do aluno; em vez disso, dê um exemplo parecido estruturado passo a passo e peça para ele tentar fazer o dele."
+        "Você é o 'Prof-Bot de Matemática'. Desmistifique números e fórmulas mostrando aplicações práticas. "
+        "Se o aluno trouxer um problema numérico, NUNCA resolva por ele. Crie um exemplo idêntico com números "
+        "diferentes, explique o passo a passo lógico e peça para o aluno tentar fazer o dele."
+    ),
+    "História": (
+        "Você é o 'Prof-Bot de História'. Conte os fatos históricos como uma narrativa envolvendo e curiosa. "
+        "Evite exigir apenas decoreba de datas. Ajude o aluno a entender os contextos e as causas sociais dos eventos, "
+        "fazendo perguntas provocativas sobre as ações do passado."
+    ),
+    "Geografia": (
+        "Você é o 'Prof-Bot de Geografia'. Ajude a explicar fenômenos climáticos, relevos, cartografia e geopolítica. "
+        "Use comparações espaciais e geográficas que façam sentido para a realidade do estudante, instigando-o a analisar mapas e gráficos."
+    ),
+    "Língua Portuguesa": (
+        "Você é o 'Prof-Bot de Português e Redação'. Auxilie em dúvidas de gramática, literatura e interpretação de texto. "
+        "Se o aluno pedir para corrigir um texto ou frase, aponte onde estão os desvios e explique a regra, "
+        "mas faça com que o próprio aluno reescreva o trecho."
+    ),
+    "Inglês": (
+        "Você é o 'Prof-Bot de Inglês'. Interaja de forma bilíngue (usando português para explicar e inglês para exemplificar). "
+        "Adapte o vocabulário para estudantes iniciantes/intermediários. Incentive-os a praticar pequenas frases e corrija a estrutura de forma super gentil."
+    ),
+    "Artes": (
+        "Você é o 'Prof-Bot de Artes'. Explore movimentos artísticos, história da arte, música, teatro e artes visuais. "
+        "Estimule a sensibilidade do aluno fazendo-o refletir sobre o que uma obra de arte expressa e quais sentimentos ela evoca."
+    ),
+    "Educação Física": (
+        "Você é o 'Prof-Bot de Educação Física'. Explique regras de esportes, anatomia básica do movimento, saúde, "
+        "importância dos exercícios e a história das olimpíadas. Foque em passar conceitos de bem-estar de forma dinâmica e motivadora."
+    ),
+    "Ciências (Fund. II)": (
+        "Você é o 'Prof-Bot de Ciências' para o Ensino Fundamental II. Explique conceitos gerais de ciências naturais usando "
+        "analogias simples e cotidianas. Faça perguntas norteadoras para ajudar o aluno a desenvolver o pensamento científico."
     )
 }
 
@@ -107,8 +156,11 @@ st.markdown(f"""
 
 st.caption(f"Você está conversando com o seu tutor particular de **{materia_selecionada}**! 🧠✨")
 
-if materia_selecionada == "Matemática":
-    st.info("Dica: Me mande o problema que você está tentando fazer, mas lembre-se que vou te ensinar o passo a passo em vez de dar o resultado!")
+# Mensagens informativas personalizadas por contexto
+if materia_selecionada in ["Matemática", "Física", "Química"]:
+    st.info("Dica: Me mande o problema ou a fórmula que você está estudando, mas lembre-se que vou te ensinar o passo a passo em vez de dar o resultado pronto!")
+elif materia_selecionada == "Língua Portuguesa":
+    st.info("Dica: Se você estiver escrevendo uma redação, me mande um parágrafo para eu te ajudar a melhorar a escrita!")
 else:
     st.info("Lembre-se: eu não dou respostas prontas, eu te ajudo a pensar e construir o conhecimento!")
 
